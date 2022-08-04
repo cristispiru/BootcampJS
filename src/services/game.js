@@ -4,6 +4,14 @@ import { computeBoardPosition, computeSymbol, verifyGame } from "../utils/game.j
 
 const prisma = new PrismaClient();
 
+const createLongRunningPromise = () => {
+    const pr = new Promise((res, rej) => {
+        setTimeout(() => res(), 5000)
+    })
+
+    return pr
+}
+
 const getAll = async () => {
     /*const dummyPromise = new Promise((res, rej) => {
         setTimeout(() => res(10), 5000)
@@ -28,8 +36,8 @@ const getGame = async (id) => {
 
 const createGame = async (ownerId) => {
     // get some random words
-    const response = await axios("https://random-word-api.herokuapp.com/word")
-    const name = response['data'][0]
+    const namePromise = axios("https://random-word-api.herokuapp.com/word")
+    const allResults = await Promise.all([namePromise, createLongRunningPromise()])
 
     const existingUser = await prisma.user.findUnique({
         where: {
@@ -45,7 +53,7 @@ const createGame = async (ownerId) => {
         data: {
             uid: existingUser.id,
             ownerSymbol: Math.round(Math.random()) === 0 ? false : true,
-            name
+            name: allResults[0].data[0]
         }
     });
     return game;
