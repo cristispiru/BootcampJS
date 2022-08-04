@@ -12,6 +12,14 @@ const createLongRunningPromise = () => {
     return pr
 }
 
+const createRejectedPromise = () => {
+    const pr = new Promise((res, rej) => {
+        setTimeout(() => rej(), 2000)
+    })
+
+    return pr
+}
+
 const getAll = async () => {
     /*const dummyPromise = new Promise((res, rej) => {
         setTimeout(() => res(10), 5000)
@@ -37,7 +45,7 @@ const getGame = async (id) => {
 const createGame = async (ownerId) => {
     // get some random words
     const namePromise = axios("https://random-word-api.herokuapp.com/word")
-    const allResults = await Promise.all([namePromise, createLongRunningPromise()])
+    const allResults = await Promise.race([namePromise, createLongRunningPromise(), createRejectedPromise()])
 
     const existingUser = await prisma.user.findUnique({
         where: {
@@ -53,7 +61,7 @@ const createGame = async (ownerId) => {
         data: {
             uid: existingUser.id,
             ownerSymbol: Math.round(Math.random()) === 0 ? false : true,
-            name: allResults[0].data[0]
+            name: allResults.data[0]
         }
     });
     return game;
