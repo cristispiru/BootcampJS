@@ -1,4 +1,4 @@
-import { computeBoardPosition } from "./game";
+import { computeBoardPosition, computeSymbol } from "./game";
 
 describe("Game utils methods", () => {
   describe("computeBoardPosition", () => {
@@ -18,4 +18,32 @@ describe("Game utils methods", () => {
         expect(pos).toBeNaN();
     })
   });
+
+  describe("compute symbol for owner", () => {
+    it("should be 1", () => {
+        const symbol = computeSymbol("id", "id", 1)
+
+        expect(symbol).toBe(1);
+    })
+
+    it("should be 0", () => {
+        const symbol = computeSymbol("id", "id", 0)
+
+        expect(symbol).toBe(0);
+    })
+  })
+
+  describe("compute symbol for player", () => {
+    it("should be 0", () => {
+        const symbol = computeSymbol("id", "non-id", 1)
+
+        expect(symbol).toBe(0);
+    })
+
+    it("should be 1", () => {
+        const symbol = computeSymbol("id", "non-id", 0)
+
+        expect(symbol).toBe(1);
+    })
+  })
 });
