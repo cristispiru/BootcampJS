@@ -1,4 +1,4 @@
-import { computeBoardPosition, computeSymbol } from "./game";
+import { computeBoardPosition, computeSymbol, verifyGame } from "./game";
 
 describe("Game utils methods", () => {
   describe("computeBoardPosition", () => {
@@ -44,6 +44,28 @@ describe("Game utils methods", () => {
         const symbol = computeSymbol("id", "non-id", 0)
 
         expect(symbol).toBe(1);
+    })
+  })
+
+  describe("verify game", () => {
+    it("should no be finished", () => {
+        const result = verifyGame([-1, 0, 0, 0, 0, 0, 0, 0, 0], 1, "id", "playerId")
+
+        expect(result.finished).toBeFalsy()
+    })
+
+    it("owner should win with 0 symbol", () => {
+        const result = verifyGame([0, 0, 0, 0, 0, 0, 0, 0, 0], 0, "id", "playerId")
+
+        expect(result.finished).toBe(true)
+        expect(result.winner).toBe("id")
+    })
+
+    it("player should win with 0 symbol", () => {
+        const result = verifyGame([1, 1, 1, 0, 0, 0, 0, 0, 0], 0, "id", "playerId")
+
+        expect(result.finished).toBe(true)
+        expect(result.winner).toBe("playerId")
     })
   })
 });
