@@ -5,6 +5,14 @@ import { computeBoardPosition, computeSymbol, verifyGame } from "../utils/game.j
 const prisma = new PrismaClient();
 
 const getAll = async () => {
+    /*const dummyPromise = new Promise((res, rej) => {
+        setTimeout(() => res(10), 5000)
+    })
+
+    dummyPromise.then(console.log);
+    await dummyPromise
+    */
+
     const games = await prisma.game.findMany()
     return games;
 };
