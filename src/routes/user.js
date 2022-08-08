@@ -12,6 +12,11 @@ router.route('/')
         check("name", "Invalid name, it must have at least 4 characters").isLength({ min: 4 })
     ], validationMiddleware, usersController.addUser)
 
+router.route('/login')
+    .post([
+        check("name", "Invalid name, it must have at least 4 characters").isLength({ min: 4 })
+    ], validationMiddleware, usersController.loginUser)
+
 router.route('/:id')
     .get(requestMiddleware, usersController.getUser)
     .put([

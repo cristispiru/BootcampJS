@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { geneateAuthToken } from "../utils/auth.js";
 
 const prisma = new PrismaClient();
 
@@ -50,4 +51,16 @@ const deleteUser = async (id) => {
     return user;
 };
 
-export default { getAll, getUser, deleteUser, addUser, updateUser };
+const loginUser = async (name) => {
+    const existingUser = await prisma.user.findUnique({
+        where: {
+            name
+        }
+    });
+    if (!existingUser) {
+        throw new Error("Invalid game id");
+    }
+    return geneateAuthToken(existingUser.id, existingUser.name);
+}
+
+export default { getAll, getUser, deleteUser, addUser, updateUser, loginUser };

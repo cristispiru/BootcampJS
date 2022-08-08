@@ -59,4 +59,15 @@ const deleteUser = async (req, res, next) => {
     }
 };
 
-export default { getUsers, getUser, deleteUser, addUser, updateUser };
+const loginUser = async (req, res, next) => {
+    try {
+        const token = await userServices.loginUser(req.body.name);
+        res.send({
+            token
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export default { getUsers, getUser, deleteUser, addUser, updateUser, loginUser };

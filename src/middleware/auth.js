@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 export const jwtMiddleware = async (req, res, next) => {
     if (!process.env.JWT_SECRET) {
         throw new Error('Missing JWT_SECRET env var')
@@ -11,7 +13,7 @@ export const jwtMiddleware = async (req, res, next) => {
     }
 
     const token = authHeader.split('Bearer ')[1]
-    verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
         try {
             if (err) {
                 res.status(403).send("Invalid token");
