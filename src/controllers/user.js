@@ -35,7 +35,7 @@ const addUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
     try {
-        const id = req.params.id
+        const id = req.auth.userId
         const user = await userServices.getUser(id);
 
         if (!user) {
@@ -52,7 +52,7 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
     try {
-        await userServices.deleteUser(req.params.id);
+        await userServices.deleteUser(req.auth.userId);
         res.send("User deleted");
     } catch (err) {
         next(err);
