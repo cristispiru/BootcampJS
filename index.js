@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
 import errorsMiddleware from "./src/middleware/errorsMiddleware.js";
 import userRouter from "./src/routes/user.js";
 import gameRouter from "./src/routes/game.js";
@@ -26,7 +27,8 @@ router.all('/react', (req, res) => {
 dotenv.config();
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ extended: false }));
+app.use(cors());
 
 const port = process.env.PORT || 3000;
 

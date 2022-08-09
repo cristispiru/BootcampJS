@@ -58,7 +58,7 @@ const loginUser = async (name) => {
         }
     });
     if (!existingUser) {
-        throw new Error("Invalid game id");
+        throw new Error("Invalid user");
     }
     return geneateAuthToken(existingUser.id, existingUser.name);
 }
